@@ -1,3 +1,5 @@
+### Due to ListView is deprecated, This component is based on React Native SectionList.
+
 ## Install:
 ```
 npm install react-native-alphabet-sectionlist  --save  
