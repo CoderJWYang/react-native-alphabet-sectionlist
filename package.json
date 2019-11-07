@@ -1,0 +1,27 @@
+{
+  "name": "react-native-alphabet-sectionlist",
+  "version": "0.0.1",
+  "description": "Based on SectionList, list with a sidebar to jump to sections directly",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": {
+    "name": "CoderJeryy",
+    "email": "yangjerryjw@gmail.com",
+    "url": "https://github.com/CoderJWYang"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "merge": "^1.2.1",
+    "prop-types": "^15.7.2"
+  },
+  "homepage": "https://github.com/CoderJWYang/react-native-alphabet-sectionlist#readme",
+  "bugs": {
+    "url": "https://github.com/CoderJWYang/react-native-alphabet-sectionlist/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CoderJWYang/react-native-alphabet-sectionlist.git"
+  }
+}
