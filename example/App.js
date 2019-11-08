@@ -34,7 +34,6 @@ class App extends React.Component {
   }
 
   renderItem = ({ item }) => {
-    console.log(item);
     return (
       <View style={{
         marginLeft: 10,
@@ -56,6 +55,18 @@ class App extends React.Component {
     )
   }
 
+  renderSectionHeader = ({ section: { title } }) => {
+    return (
+      <View style={{
+        paddingLeft: 10,
+        backgroundColor: '#f1f2f3',
+        paddingVertical: 5,
+      }}>
+        <Text style={{ color: 'blue' }}>{title}</Text>
+      </View>
+    )
+  }
+
   render() {
     return (
       <View style={{ flex: 1 }}>
@@ -63,8 +74,11 @@ class App extends React.Component {
           data={this.state.data}
           renderItem={this.renderItem}
           renderHeader={this.renderHeader}
-          sectionHeaderStyle={{ paddingVertical: 5 }}
-          sectionHeaderTextStyle={{ fontSize: 16, color: 'blue' }}
+          // custom section header
+          renderSectionHeader={this.renderSectionHeader}
+          // default section header styles
+          // sectionHeaderStyle={{ paddingVertical: 5 }}
+          // sectionHeaderTextStyle={{ fontSize: 16, color: 'blue' }}
         />
       </View>
     )

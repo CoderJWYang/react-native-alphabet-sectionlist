@@ -5,6 +5,10 @@
 npm install react-native-alphabet-sectionlist  --save  
 ```
 
+
+![list drag](https://media.giphy.com/media/LoOblHwbabTnwP4qzk/giphy.gif) 
+
+
 ## Usage
 
 The most basic way to use this component is as follows:
@@ -12,11 +16,14 @@ The most basic way to use this component is as follows:
 ```javascript
 
 <AlphabetSectionList
-    data={this.state.data}
-    renderItem={this.renderItem}
-    renderHeader={this.renderHeader}
-    sectionHeaderStyle={{ paddingVertical: 5 }}
-    sectionHeaderTextStyle={{ fontSize: 16, color: 'blue' }}
+  data={this.state.data}
+  renderItem={this.renderItem}
+  renderHeader={this.renderHeader}
+  // custom section header
+  renderSectionHeader={this.renderSectionHeader}
+  // default section header styles
+  sectionHeaderStyle={{ paddingVertical: 5 }}
+  sectionHeaderTextStyle={{ fontSize: 16, color: 'blue' }}
 />
 
 ```
@@ -26,7 +33,6 @@ You can find a more complete example below
 ## Example
 
 ```javascript
-
 import React from 'react';
 import {
   View,
@@ -55,7 +61,6 @@ class App extends React.Component {
   }
 
   renderItem = ({ item }) => {
-    console.log(item);
     return (
       <View style={{
         marginLeft: 10,
@@ -77,6 +82,18 @@ class App extends React.Component {
     )
   }
 
+  renderSectionHeader = ({ section: { title } }) => {
+    return (
+      <View style={{
+        paddingLeft: 10,
+        backgroundColor: '#f1f2f3',
+        paddingVertical: 5,
+      }}>
+        <Text style={{ color: 'blue' }}>{title}</Text>
+      </View>
+    )
+  }
+
   render() {
     return (
       <View style={{ flex: 1 }}>
@@ -84,8 +101,11 @@ class App extends React.Component {
           data={this.state.data}
           renderItem={this.renderItem}
           renderHeader={this.renderHeader}
-          sectionHeaderStyle={{ paddingVertical: 5 }}
-          sectionHeaderTextStyle={{ fontSize: 16, color: 'blue' }}
+          // custom section header
+          renderSectionHeader={this.renderSectionHeader}
+          // default section header styles
+          // sectionHeaderStyle={{ paddingVertical: 5 }}
+          // sectionHeaderTextStyle={{ fontSize: 16, color: 'blue' }}
         />
       </View>
     )
@@ -93,7 +113,4 @@ class App extends React.Component {
 }
 
 export default App;
-
 ```
-
-## Props
