@@ -1,6 +1,6 @@
 {
   "name": "react-native-alphabet-sectionlist",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Based on SectionList, list with a sidebar to jump to sections directly",
   "main": "index.js",
   "scripts": {
@@ -23,5 +23,14 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/CoderJWYang/react-native-alphabet-sectionlist.git"
-  }
+  },
+  "keywords": [
+    "react-native",
+    "iOS",
+    "android",
+    "sectionlist",
+    "contacts",
+    "addressbook",
+    "alphabet"
+  ]
 }
