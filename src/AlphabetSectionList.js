@@ -34,10 +34,6 @@ export default class AlphabetSectionList extends Component {
     this.scrollToSection = this.scrollToSection.bind(this);
   }
 
-  componentWillMount() {
-    this.calculateTotalHeight();
-  }
-
   componentDidMount() {
     setTimeout(() => {
       UIManager.measure(ReactNative.findNodeHandle(this.refs.view), (x, y, w, h) => {
@@ -47,30 +43,6 @@ export default class AlphabetSectionList extends Component {
         }
       });
     }, 0);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.data && nextProps.data !== this.props.data) {
-      this.calculateTotalHeight(nextProps.data);
-    }
-  }
-
-  calculateTotalHeight(data) {
-    data = data || this.props.data;
-
-    if (Array.isArray(data)) {
-      return;
-    }
-
-    this.sectionItemCount = {};
-    this.totalHeight = Object.keys(data)
-      .reduce((carry, key) => {
-        var itemCount = data[key].length;
-        carry += itemCount * this.props.cellHeight;
-        carry += this.props.sectionHeaderHeight;
-        this.sectionItemCount[key] = itemCount;
-        return carry;
-      }, 0);
   }
 
   scrollToSection(section) {
@@ -124,9 +96,7 @@ export default class AlphabetSectionList extends Component {
 
   render() {
     const { data } = this.props;
-    const dataIsArray = Array.isArray(data);
     let sectionList;
-    let renderSectionHeader;
     let dataSource;
     let sections = Object.keys(data);
 
@@ -134,25 +104,19 @@ export default class AlphabetSectionList extends Component {
       sections = sections.sort(this.props.compareFunction);
     }
 
-    if (dataIsArray) {
-      dataSource = data;
-    } else {
-      sectionList = !this.props.hideSectionList ?
-        <RightSectionList
-          style={this.props.rightSectionStyle}
-          onSectionSelect={this.scrollToSection}
-          sections={sections}
-          data={data}
-          getSectionListTitle={this.props.getSectionListTitle}
-          component={this.props.sectionListItem}
-          fontStyle={this.props.sectionListFontStyle}
-        /> :
-        null;
+    sectionList = !this.props.hideRightSectionList ?
+      <RightSectionList
+        style={this.props.rightSectionStyle}
+        onSectionSelect={this.scrollToSection}
+        sections={sections}
+        data={data}
+        getSectionListTitle={this.props.getRightSectionListTitle}
+        component={this.props.rightSectionListItem}
+        fontStyle={this.props.sectionListFontStyle}
+      /> :
+      null;
 
-      renderSectionHeader = this.renderSectionHeader;
-      dataSource = data;
-    }
-
+    dataSource = data;
     let sectionsListSections = [];
     for (let i = 0; i < sections.length; i++) {
       const alphabet = sections[i];
@@ -168,13 +132,18 @@ export default class AlphabetSectionList extends Component {
       this.renderHeader :
       this.props.renderHeader;
 
+    const renderSectionHeader = this.props.renderSectionHeader ?
+      this.props.renderSectionHeader :
+      this.renderSectionHeader;
+
     const props = merge({}, this.props, {
       onScroll: this.onScroll,
       onScrollAnimationEnd: this.onScrollAnimationEnd,
       sections: sectionsListSections,
       ListFooterComponent: renderFooter,
       ListHeaderComponent: renderHeader,
-      renderSectionHeader,
+      renderSectionHeader: renderSectionHeader,
+      renderItem: this.props.renderItem,
     });
 
     props.style = void 0;
@@ -211,21 +180,28 @@ AlphabetSectionList.propTypes = {
   /**
    * The data to render in the listview
    */
-  data: PropTypes.oneOfType([
-    PropTypes.array,
-    PropTypes.object,
-  ]).isRequired,
+  data: PropTypes.object.isRequired,
+
+  /**
+   * A custom element to render for each list item
+   */
+  renderItem: PropTypes.func.isRequired,
+
+  /**
+   * A custom element to render for each list section
+   */
+  renderSectionHeader: PropTypes.func,
 
   /**
    * Whether to show the section listing or not
    */
-  hideSectionList: PropTypes.bool,
+  hideRightSectionList: PropTypes.bool,
 
   /**
    * Functions to provide a title for the section header and the section list
    * items. If not provided, the section ids will be used (the keys from the data object)
    */
-  getSectionListTitle: PropTypes.func,
+  getRightSectionListTitle: PropTypes.func,
 
   /**
    * Function to sort sections. If not provided, the sections order will match data source
@@ -238,9 +214,9 @@ AlphabetSectionList.propTypes = {
   onScrollToSection: PropTypes.func,
 
   /**
-   * A custom element to render for each section list item
+   * A custom element to render for right each section list item
    */
-  sectionListItem: PropTypes.func,
+  rightSectionListItem: PropTypes.func,
 
   /**
    * A custom element to render as footer
@@ -261,16 +237,6 @@ AlphabetSectionList.propTypes = {
    * A custom function to render as footer
    */
   renderFooter: PropTypes.func,
-
-  /**
-   * The height of the section header component
-   */
-  sectionHeaderHeight: PropTypes.number.isRequired,
-
-  /**
-   * The height of the cell component
-   */
-  cellHeight: PropTypes.number.isRequired,
 
   /**
    * Whether to set the current y offset as state and pass it to each
@@ -294,12 +260,12 @@ AlphabetSectionList.propTypes = {
   rightSectionFontStyle: stylesheetProp,
 
   /**
-   * Section header style
+   * Default section header style
    */
   sectionHeaderStyle: stylesheetProp,
 
   /**
-   * Section header text style
+   * Default section header text style
    */
   sectionHeaderTextStyle: stylesheetProp,
 };
