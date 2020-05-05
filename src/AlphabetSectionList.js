@@ -52,7 +52,7 @@ export default class AlphabetSectionList extends Component {
     }
     const index = keys.indexOf(section);
 
-    this.refs.listview.scrollToLocation({ sectionIndex: index, itemIndex: 0, animated: true });
+    this.refs.listview.scrollToLocation({ sectionIndex: index, itemIndex: 0, animated: this.props.useAnimation });
 
     this.props.onScrollToSection && this.props.onScrollToSection(section);
   }
@@ -176,6 +176,10 @@ const stylesheetProp = PropTypes.oneOfType([
   PropTypes.object,
 ]);
 
+AlphabetSectionList.defaultProps = {
+  useAnimation: true
+}
+
 AlphabetSectionList.propTypes = {
   /**
    * The data to render in the listview
@@ -268,4 +272,9 @@ AlphabetSectionList.propTypes = {
    * Default section header text style
    */
   sectionHeaderTextStyle: stylesheetProp,
+
+  /**
+   * If we should animate when we change section
+   */
+  useAnimation: PropTypes.bool,
 };
